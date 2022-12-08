@@ -4,11 +4,11 @@ import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
   {
-    path: "/",
+    path: "/weather-app/",
     component: Main,
   },
   {
-    path: "/favorites",
+    path: "/weather-app/favorites",
     component: Favorites,
   },
 ];

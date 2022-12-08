@@ -2,12 +2,12 @@
   <div class="navbar">
     <div @click="$router.push('/')">Weather App</div>
     <div class="navbar__buttons">
-      <custom-button class="navbar__button-main" @click="$router.push('/')"
+      <custom-button class="navbar__button-main" @click="$router.push('/weather-app/')"
         >Main</custom-button
       >
       <custom-button
         class="navbar__button-favorites"
-        @click="$router.push('/favorites')"
+        @click="$router.push('/weather-app/favorites')"
         >Favorites</custom-button
       >
     </div>
