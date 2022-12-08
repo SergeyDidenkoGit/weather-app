@@ -3,7 +3,7 @@ import axios from "axios";
 export const ipModule = {
   state: () => {
     return {
-      ipData: "",
+      ipData: null,
     };
   },
   getters: {},
