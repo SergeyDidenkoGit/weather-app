@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="graph-wrapper">
     <canvas id="weather-graph"></canvas>
   </div>
 </template>
@@ -13,17 +13,15 @@ export default {
   data() {
     return {
       graphOptions: {
-        type: "line",
+        type: "bar",
         data: {
           labels: [],
           datasets: [
             {
               label: "Temperature",
-              data: [
-                0.166, 2.081, 3.003, 0.323, 954.792, 285.886, 43.662, 51.514,
-              ],
-              backgroundColor: "rgba(71, 183,132,.5)",
-              borderColor: "#47b784",
+              data: [],
+              backgroundColor: "#0000ff",
+              borderColor: "transparent",
               borderWidth: 3,
             },
           ],
@@ -36,7 +34,7 @@ export default {
               {
                 ticks: {
                   beginAtZero: true,
-                  padding: 25,
+                  padding: 0,
                 },
               },
             ],
@@ -52,13 +50,48 @@ export default {
     ...mapGetters({
       city: "weather/city",
     }),
+    listForecast() {
+      return this.weatherData?.list?.splice(0, 10);
+    },
+    listTemperatures() {
+      return this.listForecast?.map((item) => Math.round(item.main.temp));
+    },
+    listTemperatureTimes() {
+      const dateOptions = {
+        hour: "numeric",
+        minute: "numeric",
+      };
+      return this.listForecast?.map((item) => {
+        let date = new Date(item.dt * 1000).toLocaleString(
+          "en-US",
+          dateOptions
+        );
+        console.log(date);
+        return `${date}`;
+      });
+    },
   },
-  methods: {},
+  methods: {
+    setGraphOptions() {
+      this.graphOptions.data.datasets[0].data = this.listTemperatures;
+      this.graphOptions.data.labels = this.listTemperatureTimes;
+    },
+    initGraph() {
+      const ctx = document.getElementById("weather-graph");
+      new Chart(ctx, this.graphOptions);
+    },
+  },
   mounted() {
-    const ctx = document.getElementById("weather-graph");
-    new Chart(ctx, this.graphOptions);
+    setTimeout(() => {
+      this.setGraphOptions();
+      this.initGraph();
+    }, 1000);
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.graph-wrapper {
+  width: 100%;
+}
+</style>

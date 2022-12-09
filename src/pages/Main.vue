@@ -59,6 +59,7 @@ export default {
   margin: 0 auto;
   padding: 20px;
   width: 100%;
+  height: 100%;
   background: black;
   display: flex;
   flex-direction: column;
@@ -69,7 +70,8 @@ export default {
 .weather-block,
 .temperature-block {
   padding: 20px;
-  width: 90%;
+  width: 100%;
+  min-height: 40%;
   background: white;
 }
 </style>
