@@ -3,30 +3,48 @@ import axios from "axios";
 export const weatherModule = {
   state: () => {
     return {
+      cnt: 2,
       units: "metric",
-      appid: "d8e5bc3db521d7a0cb06d99ce63610aa",
+      appid: "afd610eb48b6805bd69ff2d873ee4bf1",
       weatherData: null,
+      todayWeather: null,
     };
   },
   getters: {
     city(state) {
-      return `${state.weatherData?.name}, ${state.weatherData?.sys?.country}`;
+      return `${state.weatherData?.city?.name}, ${state.weatherData?.city?.country}`;
     },
-    temperature(state) {
-      return `${Math.round(state.weatherData?.main?.temp)} ℃`;
+    todayWeather(state) {
+      const today = new Date(
+        new Date().getFullYear(),
+        new Date().getMonth(),
+        new Date().getDate()
+      );
+      const tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+
+      return state.weatherData?.list?.filter((item) => {
+        return item.dt < Date.parse(tomorrow) / 1000;
+      });
     },
-    feats(state) {
-      return `Feats ${Math.round(state.weatherData?.main?.feels_like)} ℃`;
-    },
-    clouds(state) {
-      return state.weatherData?.weather[0]?.description;
-    },
-    humidity(state) {
-      return `${state.weatherData?.main?.humidity} %`;
-    },
-    wind(state) {
-      return `${state.weatherData?.wind?.speed} m/sec`;
-    },
+    // temperatureRange(state){
+    //   return state.todayWeather.map((item) => ({item.}));
+    // }
+    // temperature(state) {
+    //   return `${Math.round(state.weatherData?.main?.temp)} ℃`;
+    // },
+    // feats(state) {
+    //   return `Feats ${Math.round(state.weatherData?.main?.feels_like)} ℃`;
+    // },
+    // clouds(state) {
+    //   return state.weatherData?.weather[0]?.description;
+    // },
+    // humidity(state) {
+    //   return `${state.weatherData?.main?.humidity} %`;
+    // },
+    // wind(state) {
+    //   return `${state.weatherData?.wind?.speed} m/sec`;
+    // },
   },
   mutations: {
     setWeatherData(state, data) {
@@ -34,10 +52,10 @@ export const weatherModule = {
     },
   },
   actions: {
-    async fetchCurrentUserWeather({ state, commit }, userData) {
+    async fetchWeatherByIP({ state, commit }, userData) {
       try {
         const response = await axios.get(
-          "https://api.openweathermap.org/data/2.5/weather",
+          "https://api.openweathermap.org/data/2.5/forecast",
           {
             params: {
               lat: userData.latitude,

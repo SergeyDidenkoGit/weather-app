@@ -1,12 +1,12 @@
 <template>
   <div class="main">
     <div class="weather-block">
-      <div>City: {{ city }}</div>
+      <!-- <div>City: {{ city }}</div>
       <div>Temperature: {{ temperature }}</div>
       <div>{{ feats }}</div>
       <div>Clouds: {{ clouds }}</div>
       <div>Humidity: {{ humidity }}</div>
-      <div>Wind: {{ wind }}</div>
+      <div>Wind: {{ wind }}</div> -->
     </div>
     <div class="temperature-block">
       <weather-graph></weather-graph>
@@ -32,24 +32,24 @@ export default {
     }),
     ...mapGetters({
       city: "weather/city",
-      temperature: "weather/temperature",
-      feats: "weather/feats",
-      clouds: "weather/clouds",
-      humidity: "weather/humidity",
-      wind: "weather/wind",
+      todayWeather: "weather/todayWeather",
+      // temperature: "weather/temperature",
+      // feats: "weather/feats",
+      // clouds: "weather/clouds",
+      // humidity: "weather/humidity",
+      // wind: "weather/wind",
     }),
   },
   methods: {
     ...mapMutations({}),
     ...mapActions({
       fetchIP: "ip/fetchIP",
-      fetchCurrentUserWeather: "weather/fetchCurrentUserWeather",
+      fetchWeatherByIP: "weather/fetchWeatherByIP",
     }),
   },
   async created() {
     await this.fetchIP();
-    await this.fetchCurrentUserWeather(this.ipData);
-    console.log(this.weatherData)
+    await this.fetchWeatherByIP(this.ipData);
   },
 };
 </script>

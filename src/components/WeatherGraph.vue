@@ -6,6 +6,7 @@
 
 <script>
 import Chart from "chart.js/auto";
+import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 
 export default {
   name: "weather-graph",
@@ -14,16 +15,7 @@ export default {
       graphOptions: {
         type: "line",
         data: {
-          labels: [
-            "1 pm",
-            "2 pm",
-            "3 pm",
-            "4 pm",
-            "5 pm",
-            "6 pm",
-            "7 pm",
-            "8 pm",
-          ],
+          labels: [],
           datasets: [
             {
               label: "Temperature",
@@ -53,6 +45,15 @@ export default {
       },
     };
   },
+  computed: {
+    ...mapState({
+      weatherData: (state) => state.weather.weatherData,
+    }),
+    ...mapGetters({
+      city: "weather/city",
+    }),
+  },
+  methods: {},
   mounted() {
     const ctx = document.getElementById("weather-graph");
     new Chart(ctx, this.graphOptions);
