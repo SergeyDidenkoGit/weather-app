@@ -3,19 +3,25 @@
     <div class="weather-block">
       <div>City: {{ city }}</div>
       <div>Temperature: {{ temperature }}</div>
-      <div>Feats: {{ feats }}</div>
+      <div>{{ feats }}</div>
       <div>Clouds: {{ clouds }}</div>
       <div>Humidity: {{ humidity }}</div>
       <div>Wind: {{ wind }}</div>
     </div>
-    <div class="temperature-block"></div>
+    <div class="temperature-block">
+      <weather-graph></weather-graph>
+    </div>
   </div>
 </template>
 
 <script>
+import WeatherGraph from "@/components/WeatherGraph";
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 
 export default {
+  components: {
+    WeatherGraph,
+  },
   data() {
     return {};
   },
@@ -43,6 +49,7 @@ export default {
   async created() {
     await this.fetchIP();
     await this.fetchCurrentUserWeather(this.ipData);
+    console.log(this.weatherData)
   },
 };
 </script>
