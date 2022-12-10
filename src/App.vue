@@ -1,6 +1,6 @@
 <template>
   <navbar></navbar>
-  <div class="app">
+  <div class="content">
     <router-view></router-view>
   </div>
 </template>
@@ -22,10 +22,12 @@ export default {
   box-sizing: border-box;
 }
 
-#app,
-.app {
-  max-width: 1200px;
-  min-width: 360px;
-  height: 100%;
+body {
+  background: #eeeeee;
+}
+
+#app {
+  max-width: 100%;
+  height: 100vh;
 }
 </style>

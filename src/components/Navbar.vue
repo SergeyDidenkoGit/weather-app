@@ -1,15 +1,21 @@
 <template>
   <div class="navbar">
-    <div @click="$router.push('/')">Weather App</div>
-    <div class="navbar__buttons">
-      <custom-button class="navbar__button-main" @click="$router.push('/weather-app/')"
-        >Main</custom-button
-      >
-      <custom-button
-        class="navbar__button-favorites"
-        @click="$router.push('/weather-app/favorites')"
-        >Favorites</custom-button
-      >
+    <div class="navbar__wrapper">
+      <figure class="navbar__logo-wrapper" @click="$router.push('/')">
+        <img class="navbar__logo" src="@/assets/imgs/logo.png" alt="Logo" />
+      </figure>
+      <div class="navbar__buttons">
+        <custom-button
+          class="navbar__button-main"
+          @click="$router.push('/weather-app/')"
+          >Main</custom-button
+        >
+        <custom-button
+          class="navbar__button-favorites"
+          @click="$router.push('/weather-app/favorites')"
+          >Favorites</custom-button
+        >
+      </div>
     </div>
   </div>
 </template>
@@ -22,12 +28,27 @@ export default {
 
 <style>
 .navbar {
-  padding: 0 15px;
-  height: 50px;
-  background-color: lightgray;
-  box-shadow: 2px 4px 4px gray;
+  max-width: 100%;
+  background-color: #ffffff;
+}
+
+.navbar__wrapper {
+  margin: 0 auto;
+  max-width: 1200px;
+  width: 100%;
+  padding: 25px 15px;
   display: flex;
   align-items: center;
+}
+
+.navbar__logo-wrapper {
+  width: 60px;
+  height: 40px;
+}
+
+.navbar__logo {
+  max-width: 100%;
+  height: auto;
 }
 
 .navbar__buttons {

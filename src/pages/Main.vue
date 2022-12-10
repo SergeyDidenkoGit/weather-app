@@ -1,26 +1,36 @@
 <template>
   <div class="main">
-    <div class="weather-block">
-      <!-- <div>City: {{ city }}</div>
+    <div class="search">
+      <div class="search__wrapper">
+        <autocomplete-input class="search-input"></autocomplete-input>
+        <div class="f-button"></div>
+      </div>
+    </div>
+    <div class="main__wrapper">
+      <div class="weather-block">
+        <!-- <div>City: {{ city }}</div>
       <div>Temperature: {{ temperature }}</div>
       <div>{{ feats }}</div>
       <div>Clouds: {{ clouds }}</div>
       <div>Humidity: {{ humidity }}</div>
       <div>Wind: {{ wind }}</div> -->
-    </div>
-    <div class="temperature-block">
-      <weather-graph></weather-graph>
+      </div>
+      <div class="temperature-block">
+        <weather-graph></weather-graph>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import WeatherGraph from "@/components/WeatherGraph";
+import AutocompleteInput from "@/components/AutocompleteInput";
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 
 export default {
   components: {
     WeatherGraph,
+    AutocompleteInput,
   },
   data() {
     return {};
@@ -55,12 +65,30 @@ export default {
 </script>
 
 <style scoped>
-.main {
+.search {
+  padding: 20px 20px;
+  background-color: #09f;
+}
+
+.search__wrapper {
   margin: 0 auto;
-  padding: 20px;
+  max-width: 1200px;
   width: 100%;
-  height: 100%;
-  background: black;
+}
+
+.search-input {
+  width: 30%;
+  align-self: flex-start;
+}
+
+.main {
+  max-width: 100%;
+}
+.main__wrapper {
+  margin: 0 auto;
+  max-width: 1200px;
+  width: 100%;
+  padding: 20px 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

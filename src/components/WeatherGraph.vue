@@ -20,7 +20,7 @@ export default {
             {
               label: "Temperature",
               data: [],
-              backgroundColor: "#0000ff",
+              backgroundColor: "#09f",
               borderColor: "transparent",
               borderWidth: 3,
             },
@@ -38,6 +38,11 @@ export default {
                 },
               },
             ],
+          },
+          plugins: {
+            legend: {
+              align: "end",
+            },
           },
         },
       },
