@@ -2,7 +2,7 @@
   <div class="main">
     <div class="search">
       <div class="search__wrapper">
-        <weather-input class="search-input"></weather-input>
+        <autocomplete-input class="search-input"></autocomplete-input>
         <div class="f-button"></div>
       </div>
     </div>
@@ -24,13 +24,13 @@
 
 <script>
 import WeatherGraph from "@/components/WeatherGraph";
-import WeatherInput from "@/components/WeatherInput";
+import AutocompleteInput from "@/components/AutocompleteInput";
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 
 export default {
   components: {
     WeatherGraph,
-    WeatherInput,
+    AutocompleteInput,
   },
   data() {
     return {};
