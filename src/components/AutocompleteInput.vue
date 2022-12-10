@@ -21,17 +21,19 @@
 
 <script>
 import useAutocomplete from "@/hooks/useAutocomplete";
+import { mapActions } from "vuex";
 
 export default {
   name: "autocomplete-input",
   data() {
-    return {
-      selectedCity: null,
-    };
+    return {};
   },
   methods: {
+    ...mapActions({
+      fetchWeatherByCity: "weather/fetchWeatherByCity",
+    }),
     selectCity(city) {
-      this.selectedCity = city;
+      this.fetchWeatherByCity(city);
       this.searchTerm = "";
     },
   },

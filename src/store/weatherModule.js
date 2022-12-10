@@ -6,6 +6,7 @@ export const weatherModule = {
       cnt: 2,
       units: "metric",
       appid: "afd610eb48b6805bd69ff2d873ee4bf1",
+      limit: 1,
       weatherData: null,
       todayWeather: null,
     };
@@ -66,6 +67,35 @@ export const weatherModule = {
           }
         );
 
+        commit("setWeatherData", response.data);
+      } catch (e) {
+        console.log(e);
+      } finally {
+      }
+    },
+    async fetchWeatherByCity({ state, commit }, city) {
+      try {
+        const response = await axios
+          .get("http://api.openweathermap.org/geo/1.0/direct", {
+            params: {
+              q: city,
+              limit: state.limit,
+              appid: state.appid,
+            },
+          })
+          .then((response) => {
+            return axios.get(
+              "https://api.openweathermap.org/data/2.5/forecast",
+              {
+                params: {
+                  lat: response.data[0].lat,
+                  lon: response.data[0].lon,
+                  units: state.units,
+                  appid: state.appid,
+                },
+              }
+            );
+          });
         commit("setWeatherData", response.data);
       } catch (e) {
         console.log(e);
