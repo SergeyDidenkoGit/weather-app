@@ -67,7 +67,7 @@ export default {
 <style scoped>
 .search {
   padding: 20px 20px;
-  background-color: #09f;
+  background-color: #0099ff;
 }
 
 .search__wrapper {
