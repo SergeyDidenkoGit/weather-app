@@ -36,6 +36,7 @@
           ></weak-weather-card>
         </transition-group>
       </div>
+      <weather-cities></weather-cities>
       <weather-graph></weather-graph>
     </div>
   </div>
@@ -44,6 +45,7 @@
 <script>
 import WeatherCard from "@/components/WeatherCard";
 import WeakWeatherCard from "@/components/WeakWeatherCard";
+import WeatherCities from "@/components/WeatherCities";
 import WeatherGraph from "@/components/WeatherGraph";
 import AutocompleteInput from "@/components/AutocompleteInput";
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
@@ -52,6 +54,7 @@ export default {
   components: {
     WeatherCard,
     WeakWeatherCard,
+    WeatherCities,
     WeatherGraph,
     AutocompleteInput,
   },

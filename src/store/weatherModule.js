@@ -13,6 +13,7 @@ export const weatherModule = {
         month: "long",
         day: "numeric",
       },
+      citiesWeather: [],
     };
   },
   getters: {
@@ -72,6 +73,28 @@ export const weatherModule = {
     formattedWeakWeatherDate(state, getters) {
       return getters.weakWeatherDate?.map((item) => {
         return {
+          id: item?.dt,
+          date: new Date(item?.dt * 1000).toLocaleString(
+            "en-US",
+            state.dateOptions
+          ),
+          temperature: Math.round(item?.main?.temp),
+          feels: Math.round(item?.main?.feels_like),
+          clouds:
+            item?.weather[0]?.description[0].toUpperCase() +
+            item?.weather[0]?.description?.slice(1),
+          wind: item?.wind?.speed,
+          pressure: (item?.main?.pressure * 0.750063755419211).toFixed(0),
+          humidity: item?.main?.humidity,
+        };
+      });
+    },
+    formattedCitiesWeather(state) {
+      return state.citiesWeather.map((item) => {
+        return {
+          id: item.id,
+          name: item.name,
+          coord: item.coord,
           date: new Date(item?.dt * 1000).toLocaleString(
             "en-US",
             state.dateOptions
@@ -98,6 +121,27 @@ export const weatherModule = {
     setLoading(state, value) {
       state.isLoading = value;
     },
+    setCitiesWeather(state, data) {
+      if (state.citiesWeather.length === 0) {
+        state.citiesWeather.push(data);
+      } else if (state.citiesWeather.length < 5) {
+        if (!state.citiesWeather.some((item) => item.dt === data.dt)) {
+          state.citiesWeather.push(data);
+        }
+      } else {
+        console.log("Can't add");
+      }
+    },
+    deleteCitiesWeatherItem(state, data) {
+      if (state.citiesWeather.length > 0) {
+        state.citiesWeather = state.citiesWeather.filter((item) => {
+          return item.id !== data.id;
+        });
+      }
+    },
+    clearCitiesWeather(state) {
+      state.citiesWeather = [];
+    },
   },
   actions: {
     async fetchCurrentWeatherByIP({ state, commit }, userData) {
@@ -114,6 +158,7 @@ export const weatherModule = {
           }
         );
         commit("setCurrentWeatherData", response.data);
+        commit("setCitiesWeather", response.data);
       } catch (e) {
         console.log(e);
       } finally {
