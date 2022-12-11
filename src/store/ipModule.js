@@ -4,6 +4,7 @@ export const ipModule = {
   state: () => {
     return {
       ipData: null,
+      apiKey: "bb691e293eec4a21a615c07be7216208",
     };
   },
   getters: {},
