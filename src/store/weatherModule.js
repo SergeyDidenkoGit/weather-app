@@ -14,6 +14,7 @@ export const weatherModule = {
         day: "numeric",
       },
       citiesWeather: [],
+      favoritesCitiesWeather: [],
     };
   },
   getters: {
@@ -27,7 +28,7 @@ export const weatherModule = {
       );
     },
     currentTemperature(state) {
-      return Math.floor(state.currentWeatherData?.main?.temp);
+      return Math.round(state.currentWeatherData?.main?.temp);
     },
     currentFeels(state) {
       return Math.round(state.currentWeatherData?.main?.feels_like);
@@ -142,6 +143,9 @@ export const weatherModule = {
     clearCitiesWeather(state) {
       state.citiesWeather = [];
     },
+    setFavoritesCitiesWeather(state, date) {
+      state.favoritesCitiesWeather.push(date);
+    },
   },
   actions: {
     async fetchCurrentWeatherByIP({ state, commit }, userData) {
@@ -247,6 +251,29 @@ export const weatherModule = {
         console.log(e);
       } finally {
         commit("setLoading", false);
+      }
+    },
+    async fetchCurrentWeatherByCoords({ state, commit }, userData) {
+      try {
+        const response = await axios.get(
+          "https://api.openweathermap.org/data/2.5/weather",
+          {
+            params: {
+              lat: userData.lat,
+              lon: userData.lon,
+              units: state.units,
+              appid: state.appid,
+            },
+          }
+        );
+        // commit("setFavoritesCitiesWeather", response.data);
+        return response.data;
+      } catch (e) {
+        console.log(e);
+      } finally {
+        setTimeout(() => {
+          commit("setLoading", false);
+        }, 1000);
       }
     },
   },

@@ -68,6 +68,7 @@ export default {
   border-radius: 3px;
   background-color: rgba(255, 255, 255, 0.85);
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
 }
@@ -145,5 +146,10 @@ export default {
   font-size: 13px;
   line-height: 15px;
   vertical-align: top;
+}
+
+
+@media (max-width: 1250px) {
+
 }
 </style>

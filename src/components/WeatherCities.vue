@@ -27,11 +27,14 @@
         ></city-weather-item>
       </KeepAlive>
     </div>
+    <custom-dialog class="delete-city-dialog" v-model:show="dialogVisible"
+      >City Deleted</custom-dialog
+    >
   </section>
 </template>
 
 <script>
-import cityWeatherItem from "@/components/UI/CityWeatherItem.vue";
+import cityWeatherItem from "@/components/CityWeatherItem.vue";
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 
 export default {
@@ -42,6 +45,7 @@ export default {
   data() {
     return {
       itemData: null,
+      dialogVisible: false,
     };
   },
   computed: {
@@ -69,6 +73,7 @@ export default {
       if (this.itemData) {
         this.deleteCitiesWeatherItem(this.itemData);
         this.resetItemData();
+        this.dialogVisible = true;
       }
     },
     clearCities() {
@@ -103,11 +108,10 @@ export default {
       this.resetItemData();
     },
     getItemData(itemData) {
-      console.log(itemData);
       this.itemData = itemData;
     },
     resetItemData() {
-      this.itemData = [];
+      this.itemData = null;
     },
   },
 };
@@ -147,5 +151,9 @@ export default {
 
 .selected {
   box-shadow: 0px 0px 11px 7px rgb(0, 153, 255, 0.85);
+}
+
+.delete-city-dialog {
+  text-align: center;
 }
 </style>

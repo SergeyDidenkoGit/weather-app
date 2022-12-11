@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <section class="main">
     <div class="search">
       <div class="search__wrapper">
         <autocomplete-input class="search-input"></autocomplete-input>
@@ -39,7 +39,7 @@
       <weather-cities></weather-cities>
       <weather-graph></weather-graph>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -95,6 +95,10 @@ export default {
 </script>
 
 <style scoped>
+.main {
+  max-width: 100%;
+}
+
 .search {
   padding: 20px 20px;
   background-color: #0099ff;
@@ -109,10 +113,6 @@ export default {
 .search-input {
   width: 30%;
   align-self: flex-start;
-}
-
-.main {
-  max-width: 100%;
 }
 
 .main__wrapper {

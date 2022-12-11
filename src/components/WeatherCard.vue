@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapState, mapGetters } from "vuex";
 
 export default {
   name: "weather-card",
@@ -43,6 +43,9 @@ export default {
     return {};
   },
   computed: {
+    ...mapState({
+      weatherData: (state) => state.weather.weatherData,
+    }),
     ...mapGetters({
       city: "weather/city",
       date: "weather/date",
