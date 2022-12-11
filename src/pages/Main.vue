@@ -111,6 +111,7 @@ export default {
 .main {
   max-width: 100%;
 }
+
 .main__wrapper {
   margin: 0 auto;
   max-width: 1200px;
@@ -138,7 +139,7 @@ export default {
   justify-content: space-between;
 }
 
-.weather__button_active {
+.weather__button.weather__button_active {
   background: #ffffff;
   color: #0e3c62;
   border: 1px solid #0e3c62;
