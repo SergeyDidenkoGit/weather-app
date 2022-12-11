@@ -36,6 +36,7 @@
           ></weak-weather-card>
         </transition-group>
       </div>
+      <weather-cities></weather-cities>
       <weather-graph></weather-graph>
     </div>
   </div>
@@ -44,6 +45,7 @@
 <script>
 import WeatherCard from "@/components/WeatherCard";
 import WeakWeatherCard from "@/components/WeakWeatherCard";
+import WeatherCities from "@/components/WeatherCities";
 import WeatherGraph from "@/components/WeatherGraph";
 import AutocompleteInput from "@/components/AutocompleteInput";
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
@@ -52,6 +54,7 @@ export default {
   components: {
     WeatherCard,
     WeakWeatherCard,
+    WeatherCities,
     WeatherGraph,
     AutocompleteInput,
   },
@@ -111,6 +114,7 @@ export default {
 .main {
   max-width: 100%;
 }
+
 .main__wrapper {
   margin: 0 auto;
   max-width: 1200px;
@@ -138,7 +142,7 @@ export default {
   justify-content: space-between;
 }
 
-.weather__button_active {
+.weather__button.weather__button_active {
   background: #ffffff;
   color: #0e3c62;
   border: 1px solid #0e3c62;
