@@ -9,6 +9,10 @@ export const weatherModule = {
       limit: 1,
       weatherData: null,
       todayWeather: null,
+      dateOptions: {
+        month: "long",
+        day: "numeric",
+      },
     };
   },
   getters: {
@@ -28,24 +32,35 @@ export const weatherModule = {
         return item.dt < Date.parse(tomorrow) / 1000;
       });
     },
-    // temperatureRange(state){
-    //   return state.todayWeather.map((item) => ({item.}));
-    // }
-    // temperature(state) {
-    //   return `${Math.round(state.weatherData?.main?.temp)} ℃`;
-    // },
-    // feats(state) {
-    //   return `Feats ${Math.round(state.weatherData?.main?.feels_like)} ℃`;
-    // },
-    // clouds(state) {
-    //   return state.weatherData?.weather[0]?.description;
-    // },
-    // humidity(state) {
-    //   return `${state.weatherData?.main?.humidity} %`;
-    // },
-    // wind(state) {
-    //   return `${state.weatherData?.wind?.speed} m/sec`;
-    // },
+    date(state) {
+      return new Date(state.weatherData?.list[0]?.dt * 1000).toLocaleString(
+        "en-US",
+        state.dateOptions
+      );
+    },
+    temperature(state) {
+      return Math.floor(state.weatherData?.list[0]?.main?.temp);
+    },
+    feels(state) {
+      return Math.round(state.weatherData?.list[0]?.main?.feels_like);
+    },
+    clouds(state) {
+      return (
+        state.weatherData?.list[0]?.weather[0]?.description[0].toUpperCase() +
+        state.weatherData?.list[0]?.weather[0]?.description?.slice(1)
+      );
+    },
+    wind(state) {
+      return state.weatherData?.list[0]?.wind?.speed;
+    },
+    pressure(state) {
+      return (
+        state.weatherData?.list[0]?.main?.pressure * 0.750063755419211
+      ).toFixed(0);
+    },
+    humidity(state) {
+      return state.weatherData?.list[0]?.main?.humidity;
+    },
   },
   mutations: {
     setWeatherData(state, data) {

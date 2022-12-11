@@ -1,5 +1,5 @@
 <template>
-  <div class="autocomplete">
+  <section class="autocomplete">
     <custom-input
       ref="autocompleteInput"
       class="autocomplete__input"
@@ -16,7 +16,7 @@
         {{ city }}
       </li>
     </ul>
-  </div>
+  </section>
 </template>
 
 <script>

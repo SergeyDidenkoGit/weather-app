@@ -7,28 +7,24 @@
       </div>
     </div>
     <div class="main__wrapper">
-      <div class="weather-block">
-        <!-- <div>City: {{ city }}</div>
-      <div>Temperature: {{ temperature }}</div>
-      <div>{{ feats }}</div>
-      <div>Clouds: {{ clouds }}</div>
-      <div>Humidity: {{ humidity }}</div>
-      <div>Wind: {{ wind }}</div> -->
+      <div>
+        <h1 class="main__header">Weather in {{ city }} now</h1>
       </div>
-      <div class="temperature-block">
-        <weather-graph></weather-graph>
-      </div>
+      <weather-card></weather-card>
+      <weather-graph></weather-graph>
     </div>
   </div>
 </template>
 
 <script>
+import WeatherCard from "@/components/WeatherCard";
 import WeatherGraph from "@/components/WeatherGraph";
 import AutocompleteInput from "@/components/AutocompleteInput";
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 
 export default {
   components: {
+    WeatherCard,
     WeatherGraph,
     AutocompleteInput,
   },
@@ -43,11 +39,6 @@ export default {
     ...mapGetters({
       city: "weather/city",
       todayWeather: "weather/todayWeather",
-      // temperature: "weather/temperature",
-      // feats: "weather/feats",
-      // clouds: "weather/clouds",
-      // humidity: "weather/humidity",
-      // wind: "weather/wind",
     }),
   },
   methods: {
@@ -95,11 +86,13 @@ export default {
   align-items: center;
 }
 
+.main__header {
+  text-align: center;
+}
+
 .weather-block,
 .temperature-block {
   padding: 20px;
   width: 100%;
-  min-height: 40%;
-  background: white;
 }
 </style>

@@ -1,52 +1,19 @@
 <template>
-  <div class="graph-wrapper">
-    <canvas ref="weatherGraph"></canvas>
-  </div>
+  <section class="weather-graph" :key="componentKey">
+    <canvas ref="weatherGraph" class="weather-graph__canvas"></canvas>
+  </section>
 </template>
 
 <script>
 import Chart from "chart.js/auto";
-import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
+import { mapState, mapGetters } from "vuex";
 
 export default {
   name: "weather-graph",
   data() {
     return {
-      graphOptions: {
-        type: "line",
-        data: {
-          labels: [],
-          datasets: [
-            {
-              label: "Temperature",
-              data: [],
-              backgroundColor: "#0099ff",
-              borderColor: "#0099ff",
-              borderWidth: 3,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          lineTension: 1,
-          scales: {
-            yAxes: [
-              {
-                ticks: {
-                  beginAtZero: true,
-                  padding: 0,
-                },
-              },
-            ],
-          },
-          plugins: {
-            legend: {
-              align: "end",
-            },
-          },
-        },
-      },
       graphInstance: null,
+      componentKey: 0,
     };
   },
   computed: {
@@ -75,42 +42,72 @@ export default {
         return `${date}`;
       });
     },
+    graphOptions() {
+      return {
+        type: "line",
+        data: {
+          labels: this.listTemperatureTimes,
+          datasets: [
+            {
+              label: "Temperature",
+              data: this.listTemperatures,
+              backgroundColor: "#0099ff",
+              borderColor: "#0099ff",
+              borderWidth: 2,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          lineTension: 1,
+          scales: {
+            y: {
+              type: "linear",
+            },
+          },
+          plugins: {
+            legend: {
+              align: "end",
+            },
+          },
+        },
+      };
+    },
   },
   methods: {
-    setGraphOptions() {
-      this.graphOptions.data.datasets[0].data = this.listTemperatures;
-      this.graphOptions.data.labels = this.listTemperatureTimes;
-    },
     initGraph() {
-      const ctx = this.$refs.weatherGraph;
-      this.graphInstance = new Chart(ctx, this.graphOptions);
-    },
-    destroyGraph() {
-      this.graphInstance?.destroy();
-    },
-    renderGraph() {
-      this.setGraphOptions();
-      this.initGraph();
-    },
-    rerenderGraph() {
-      this.setGraphOptions();
-      this.destroyGraph();
-      this.initGraph();
+      setTimeout(() => {
+        const ctx = this.$refs.weatherGraph;
+        this.graphInstance = new Chart(ctx, this.graphOptions);
+      }, 100);
     },
   },
   watch: {
-    weatherData() {
-      this.rerenderGraph();
+    graphOptions: {
+      handler() {
+        this.componentKey += 1;
+        this.initGraph();
+      },
+      deep: true,
     },
   },
   mounted() {
-    this.renderGraph();
+    this.initGraph();
   },
 };
 </script>
 
 <style scoped>
-.graph-wrapper {
-  width: 100%;
+.weather-graph {
+  margin-top: 30px;
+  padding: 15px;
+  width: 80%;
+  background: #ffffff;
+  box-shadow: 0px 0px 11px 7px rgb(0, 153, 255, 0.2);
+}
+
+.weather-graph__canvas {
+  width: 100% !important;
+  height: auto !important;
 }
 </style>
