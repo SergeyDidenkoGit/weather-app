@@ -1,5 +1,5 @@
 <template>
-  <div class="autocomplete">
+  <section class="autocomplete">
     <custom-input
       ref="autocompleteInput"
       class="autocomplete__input"
@@ -16,22 +16,26 @@
         {{ city }}
       </li>
     </ul>
-  </div>
+  </section>
 </template>
 
 <script>
 import useAutocomplete from "@/hooks/useAutocomplete";
+import { mapActions } from "vuex";
 
 export default {
   name: "autocomplete-input",
   data() {
-    return {
-      selectedCity: null,
-    };
+    return {};
   },
   methods: {
+    ...mapActions({
+      fetchCurrentWeatherByCity: "weather/fetchCurrentWeatherByCity",
+      fetchWeatherByCity: "weather/fetchWeatherByCity",
+    }),
     selectCity(city) {
-      this.selectedCity = city;
+      this.fetchCurrentWeatherByCity(city);
+      this.fetchWeatherByCity(city);
       this.searchTerm = "";
     },
   },

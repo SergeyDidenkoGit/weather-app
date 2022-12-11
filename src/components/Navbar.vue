@@ -1,5 +1,5 @@
 <template>
-  <div class="navbar">
+  <section class="navbar">
     <div class="navbar__wrapper">
       <figure class="navbar__logo-wrapper" @click="$router.push('/')">
         <img class="navbar__logo" src="@/assets/imgs/logo.png" alt="Logo" />
@@ -17,7 +17,7 @@
         >
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
