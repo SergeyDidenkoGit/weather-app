@@ -1,33 +1,37 @@
 <template>
-  <section class="weather-card">
-    <div class="weather-card__wrapper">
+  <section class="weak-weather-card">
+    <div
+      class="weak-weather-card__element"
+      v-for="item in formattedWeakWeatherDate"
+      :key="item.dt"
+    >
       <div class="weather-card__date">
-        <span>{{ date }}</span>
+        <span>{{ item.date }}</span>
       </div>
       <div class="weather-card__temperature">
-        <span v-if="currentTemperature > 0">+</span>
-        <span>{{ currentTemperature }}</span>
+        <span v-if="item.temperature > 0">+</span>
+        <span>{{ item.temperature }}</span>
       </div>
       <div class="weather-card__feels">
         <span>Feels </span>
-        <span v-if="currentFeels > 0">+</span>
-        <span>{{ currentFeels }}</span>
+        <span v-if="item.feels > 0">+</span>
+        <span>{{ item.feels }}</span>
       </div>
       <div class="weather-card__clouds">
-        <span>{{ currentClouds }}</span>
+        <span>{{ item.clouds }}</span>
       </div>
       <div class="weather-card__other-info">
         <div class="weather-card__wind">
           <span class="name">Wind</span>
-          <span>{{ currentWind }}<span class="symbol">m/s</span></span>
+          <span>{{ item.wind }}<span class="symbol">m/s</span></span>
         </div>
         <div class="weather-card__pressure">
           <span class="name">Pressure</span>
-          <span>{{ currentPressure }}<span class="symbol">mm Hg</span></span>
+          <span>{{ item.pressure }}<span class="symbol">mm Hg</span></span>
         </div>
         <div class="weather-card__humidity">
           <span class="name">Humidity</span>
-          <span>{{ currentHumidity }}<span class="symbol">%</span></span>
+          <span>{{ item.humidity }}<span class="symbol">%</span></span>
         </div>
       </div>
     </div>
@@ -38,36 +42,34 @@
 import { mapGetters } from "vuex";
 
 export default {
-  name: "weather-card",
+  name: "weak-weather-card",
   data() {
     return {};
   },
   computed: {
     ...mapGetters({
-      city: "weather/city",
-      date: "weather/date",
-      currentTemperature: "weather/currentTemperature",
-      currentFeels: "weather/currentFeels",
-      currentClouds: "weather/currentClouds",
-      currentWind: "weather/currentWind",
-      currentPressure: "weather/currentPressure",
-      currentHumidity: "weather/currentHumidity",
+      weakWeatherDate: "weather/weakWeatherDate",
+      formattedWeakWeatherDate: "weather/formattedWeakWeatherDate",
     }),
   },
 };
 </script>
 
 <style scoped>
-.weather-card {
+.weak-weather-card {
   margin-top: 30px;
   padding: 15px;
   width: 100%;
   background: #ffffff;
   box-shadow: 0px 0px 11px 7px rgb(0, 153, 255, 0.2);
+  display: flex;
+  justify-content: space-between;
 }
 
-.weather-card__wrapper {
+.weak-weather-card__element {
   position: relative;
+  margin: 0 5px;
+  width: 100%;
   height: 400px;
   border-radius: 6px;
   background: url("@/assets/imgs/weather-card-background.jpg") no-repeat
@@ -94,7 +96,7 @@ export default {
 }
 
 .weather-card__temperature span {
-  font-size: 120px;
+  font-size: 60px;
   line-height: 1;
   color: #0e3c62;
 }
@@ -115,7 +117,7 @@ export default {
 }
 
 .weather-card__clouds {
-  margin-top: 50px;
+  margin-top: 20px;
 }
 
 .weather-card__clouds span {
@@ -125,11 +127,11 @@ export default {
 }
 
 .weather-card__other-info {
-  position: absolute;
-  bottom: 0;
   padding: 20px;
   width: 100%;
+  height: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
 }
@@ -139,25 +141,23 @@ export default {
 .weather-card__humidity {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .weather-card__other-info span {
   display: inline-block;
   font-size: 32px;
-  line-height: 1;
   color: #0e3c62;
+  text-align: center;
 }
 
 .weather-card__other-info .name {
   font-size: 13px;
-  line-height: 15px;
 }
 
 .weather-card__other-info .symbol {
   font-size: 13px;
-  line-height: 15px;
   vertical-align: top;
 }
 </style>

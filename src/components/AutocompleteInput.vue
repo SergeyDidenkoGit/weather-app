@@ -30,9 +30,11 @@ export default {
   },
   methods: {
     ...mapActions({
+      fetchCurrentWeatherByCity: "weather/fetchCurrentWeatherByCity",
       fetchWeatherByCity: "weather/fetchWeatherByCity",
     }),
     selectCity(city) {
+      this.fetchCurrentWeatherByCity(city);
       this.fetchWeatherByCity(city);
       this.searchTerm = "";
     },
