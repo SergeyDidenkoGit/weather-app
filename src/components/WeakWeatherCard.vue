@@ -60,8 +60,8 @@ export default {
   margin-top: 30px;
   padding: 15px;
   width: 100%;
+  border-radius: 6px;
   background: #ffffff;
-  box-shadow: 0px 0px 11px 7px rgb(0, 153, 255, 0.2);
   display: flex;
   justify-content: space-between;
 }
@@ -159,5 +159,16 @@ export default {
 .weather-card__other-info .symbol {
   font-size: 13px;
   vertical-align: top;
+}
+
+@media (max-width: 980px) {
+  .weak-weather-card {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .weak-weather-card__element{
+    margin-top: 10px;
+  }
 }
 </style>

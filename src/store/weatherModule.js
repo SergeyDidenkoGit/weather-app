@@ -15,6 +15,7 @@ export const weatherModule = {
       },
       citiesWeather: [],
       favoritesCitiesWeather: [],
+      dialogMessage: null,
     };
   },
   getters: {
@@ -122,15 +123,19 @@ export const weatherModule = {
     setLoading(state, value) {
       state.isLoading = value;
     },
+    setDialogMessage(state, value) {
+      state.dialogMessage = value;
+    },
     setCitiesWeather(state, data) {
+      state.dialogMessage = null;
       if (state.citiesWeather.length === 0) {
         state.citiesWeather.push(data);
       } else if (state.citiesWeather.length < 5) {
         if (!state.citiesWeather.some((item) => item.dt === data.dt)) {
           state.citiesWeather.push(data);
+        } else {
+          state.dialogMessage = "City exist in list";
         }
-      } else {
-        console.log("Can't add");
       }
     },
     deleteCitiesWeatherItem(state, data) {

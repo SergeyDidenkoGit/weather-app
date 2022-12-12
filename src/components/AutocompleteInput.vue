@@ -68,6 +68,7 @@ export default {
   border-radius: 5px;
   background: #ffffff;
   overflow-y: scroll;
+  z-index: 100000;
 }
 
 .autocomplete__option {

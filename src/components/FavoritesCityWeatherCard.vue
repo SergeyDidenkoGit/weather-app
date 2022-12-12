@@ -1,6 +1,10 @@
 <template>
-  <section class="favorites-city-weather-card">
+  <section class="favorites-city-weather-card" v-if="!isLoading">
     <div class="favorites-city-weather-card__wrapper">
+      <button
+        class="favorites-city-weather-card__delete-button"
+        @click="deleteCard"
+      ></button>
       <div class="favorites-city-weather-card__date">
         <span>{{ cityWeather.date }}</span>
       </div>
@@ -20,17 +24,17 @@
         <span>{{ cityWeather.clouds }}</span>
       </div>
       <div class="favorites-city-weather-card__other-info">
-        <div class="favorites-city-weather-card__wind">
+        <div class="favorites-city-weather-card__wind info">
           <span class="name">Wind</span>
           <span>{{ cityWeather.wind }}<span class="symbol">m/s</span></span>
         </div>
-        <div class="favorites-city-weather-card__pressure">
+        <div class="favorites-city-weather-card__pressure info">
           <span class="name">Pressure</span>
           <span
             >{{ cityWeather.pressure }}<span class="symbol">mm Hg</span></span
           >
         </div>
-        <div class="favorites-city-weather-card__humidity">
+        <div class="favorites-city-weather-card__humidity info">
           <span class="name">Humidity</span>
           <span>{{ cityWeather.humidity }}<span class="symbol">%</span></span>
         </div>
@@ -40,11 +44,14 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 
 export default {
   name: "favorites-city-weather-card",
   props: {
+    id: {
+      type: [Number, String],
+    },
     coords: {
       type: Object,
       default: {},
@@ -57,7 +64,6 @@ export default {
   },
   computed: {
     ...mapState({
-      // favoritesCitiesWeather: (state) => state.weather.favoritesCitiesWeather,
       isLoading: (state) => state.weather.isLoading,
       dateOptions: (state) => state.weather.dateOptions,
     }),
@@ -88,6 +94,21 @@ export default {
     ...mapActions({
       fetchCurrentWeatherByCoords: "weather/fetchCurrentWeatherByCoords",
     }),
+    deleteCard() {
+      let lsFavoritesCitiesWeather = this.getLocalStorageItem();
+      if (lsFavoritesCitiesWeather.length > 1) {
+        lsFavoritesCitiesWeather.splice(this.id, 1);
+        this.setLocalStorageData(lsFavoritesCitiesWeather);
+      } else {
+        localStorage.removeItem("favoritesCitiesWeather");
+      }
+    },
+    getLocalStorageItem() {
+      return JSON.parse(localStorage.getItem("favoritesCitiesWeather"));
+    },
+    setLocalStorageData(arr) {
+      localStorage.setItem("favoritesCitiesWeather", JSON.stringify(arr));
+    },
   },
   async mounted() {
     this.favoritesCityData = await this.fetchCurrentWeatherByCoords(
@@ -102,13 +123,13 @@ export default {
   margin-top: 30px;
   padding: 15px;
   width: 100%;
+  height: 100%;
+  border-radius: 6px;
   background: #ffffff;
-  box-shadow: 0px 0px 11px 7px rgb(0, 153, 255, 0.2);
 }
 
 .favorites-city-weather-card__wrapper {
   position: relative;
-  height: 400px;
   border-radius: 6px;
   background: url("@/assets/imgs/weather-card-background.jpg") no-repeat
     center/cover;
@@ -117,6 +138,16 @@ export default {
   justify-content: flex-start;
   align-items: center;
   overflow: hidden;
+}
+
+.favorites-city-weather-card__delete-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: url("@/assets/imgs/close-icon.png") no-repeat center/contain;
 }
 
 .favorites-city-weather-card__date {
@@ -165,8 +196,7 @@ export default {
 }
 
 .favorites-city-weather-card__other-info {
-  position: absolute;
-  bottom: 0;
+  margin-top: 40px;
   padding: 20px;
   width: 100%;
   display: flex;
@@ -199,5 +229,18 @@ export default {
   font-size: 13px;
   line-height: 15px;
   vertical-align: top;
+}
+
+@media (max-width: 570px) {
+  .favorites-city-weather-card__other-info {
+    margin-top: 20px;
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .info {
+    margin-top: 10px;
+    align-items: center;
+  }
 }
 </style>

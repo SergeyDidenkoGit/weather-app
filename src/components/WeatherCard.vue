@@ -17,15 +17,15 @@
         <span>{{ currentClouds }}</span>
       </div>
       <div class="weather-card__other-info">
-        <div class="weather-card__wind">
+        <div class="weather-card__wind info">
           <span class="name">Wind</span>
           <span>{{ currentWind }}<span class="symbol">m/s</span></span>
         </div>
-        <div class="weather-card__pressure">
+        <div class="weather-card__pressure info">
           <span class="name">Pressure</span>
           <span>{{ currentPressure }}<span class="symbol">mm Hg</span></span>
         </div>
-        <div class="weather-card__humidity">
+        <div class="weather-card__humidity info">
           <span class="name">Humidity</span>
           <span>{{ currentHumidity }}<span class="symbol">%</span></span>
         </div>
@@ -65,13 +65,13 @@ export default {
   margin-top: 30px;
   padding: 15px;
   width: 100%;
+  height: 100%;
+  border-radius: 6px;
   background: #ffffff;
-  box-shadow: 0px 0px 11px 7px rgb(0, 153, 255, 0.2);
 }
 
 .weather-card__wrapper {
   position: relative;
-  height: 400px;
   border-radius: 6px;
   background: url("@/assets/imgs/weather-card-background.jpg") no-repeat
     center/cover;
@@ -128,8 +128,7 @@ export default {
 }
 
 .weather-card__other-info {
-  position: absolute;
-  bottom: 0;
+  margin-top: 40px;
   padding: 20px;
   width: 100%;
   display: flex;
@@ -162,5 +161,18 @@ export default {
   font-size: 13px;
   line-height: 15px;
   vertical-align: top;
+}
+
+@media (max-width: 570px) {
+  .weather-card__other-info {
+    margin-top: 20px;
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .info {
+    margin-top: 10px;
+    align-items: center;
+  }
 }
 </style>

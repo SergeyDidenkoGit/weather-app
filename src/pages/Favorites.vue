@@ -1,22 +1,30 @@
 <template>
   <section class="favorites">
-    <div class="favorites__wrapper">
-      <div>
-        <h1 class="main__header">Favorites cities weather</h1>
+    <template v-if="!isLoading">
+      <div class="favorites__wrapper">
+        <div>
+          <h1 class="main__header">Favorites cities weather</h1>
+        </div>
+        <div class="weather">
+          <transition-group name="favorites-city-weather-card">
+            <favorites-city-weather-card
+              v-for="(item, index) in citiesCoords"
+              :key="item?.lat"
+              :id="index"
+              :coords="item"
+              @click="refreshData"
+            ></favorites-city-weather-card>
+          </transition-group>
+        </div>
       </div>
-      <div class="weather">
-        <favorites-city-weather-card
-          v-for="item in citiesCoords"
-          :key="item.lat"
-          :coords="item"
-        ></favorites-city-weather-card>
-      </div>
-    </div>
+    </template>
+    <custom-loader class="custom-loader" v-if="isLoading"></custom-loader>
   </section>
 </template>
 
 <script>
 import FavoritesCityWeatherCard from "@/components/FavoritesCityWeatherCard";
+import { mapState } from "vuex";
 
 export default {
   components: {
@@ -27,12 +35,22 @@ export default {
       citiesCoords: null,
     };
   },
-  computed: {},
-  methods: {},
+  computed: {
+    ...mapState({
+      isLoading: (state) => state.weather.isLoading,
+    }),
+  },
+  methods: {
+    refreshData() {
+      this.citiesCoords = JSON.parse(
+        localStorage.getItem("favoritesCitiesWeather")
+      )?.map((item) => item?.coord);
+    },
+  },
   mounted() {
     this.citiesCoords = JSON.parse(
       localStorage.getItem("favoritesCitiesWeather")
-    ).map((item) => item.coord);
+    )?.map((item) => item?.coord);
   },
 };
 </script>
@@ -56,5 +74,20 @@ export default {
 .weather {
   position: relative;
   width: 80%;
+}
+
+.favorites-city-weather-card-enter-active,
+.favorites-city-weather-card-leave-active {
+  transition: all 0.5s ease;
+}
+
+.favorites-city-weather-card-enter-from,
+.favorites-city-weather-card-leave-to {
+  opacity: 0;
+  transform: translateY(-30px);
+}
+
+.custom-loader {
+  margin: 50px auto;
 }
 </style>
