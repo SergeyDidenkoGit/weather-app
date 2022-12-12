@@ -201,7 +201,7 @@ export const weatherModule = {
     async fetchCurrentWeatherByCity({ state, commit }, city) {
       try {
         const response = await axios
-          .get("http://api.openweathermap.org/geo/1.0/direct", {
+          .get("https://api.openweathermap.org/geo/1.0/direct", {
             params: {
               q: city,
               limit: state.limit,
@@ -231,7 +231,7 @@ export const weatherModule = {
     async fetchWeatherByCity({ state, commit }, city) {
       try {
         const response = await axios
-          .get("http://api.openweathermap.org/geo/1.0/direct", {
+          .get("https://api.openweathermap.org/geo/1.0/direct", {
             params: {
               q: city,
               limit: state.limit,
