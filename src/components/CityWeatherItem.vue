@@ -1,7 +1,7 @@
 <template>
   <section class="city-weather-item">
     <div class="city-weather-item__wrapper">
-      <div class="city-weather-item__city">
+      <div class="city-weather-item__name">
         <span>{{ weatherData.name }}</span>
       </div>
       <div class="city-weather-item__temperature">
@@ -17,17 +17,17 @@
         <span>{{ weatherData.clouds }}</span>
       </div>
       <div class="city-weather-item__other-info">
-        <div class="city-weather-item__wind">
+        <div class="city-weather-item__wind info">
           <span class="name">Wind</span>
           <span>{{ weatherData.wind }}<span class="symbol">m/s</span></span>
         </div>
-        <div class="city-weather-item__pressure">
+        <div class="city-weather-item__pressure info">
           <span class="name">Pressure</span>
           <span
             >{{ weatherData.pressure }}<span class="symbol">mm Hg</span></span
           >
         </div>
-        <div class="city-weather-item__humidity">
+        <div class="city-weather-item__humidity info">
           <span class="name">Humidity</span>
           <span>{{ weatherData.humidity }}<span class="symbol">%</span></span>
         </div>
@@ -103,10 +103,6 @@ export default {
   color: #0e3c62;
 }
 
-.city-weather-item__clouds {
-  margin-top: 0;
-}
-
 .city-weather-item__clouds span {
   font-size: 17px;
   color: #0e3c62;
@@ -145,5 +141,38 @@ export default {
   font-size: 13px;
   line-height: 15px;
   vertical-align: top;
+}
+
+@media (max-width: 1024px) {
+  .city-weather-item__wrapper {
+    padding: 15px 10px;
+    flex-direction: column;
+  }
+
+  .city-weather-item__name {
+    padding-top: 5px;
+  }
+
+  .city-weather-item__temperature {
+    padding-top: 5px;
+  }
+
+  .city-weather-item__feels {
+    margin-top: 5px;
+  }
+
+  .city-weather-item__clouds {
+    margin-top: 15px;
+  }
+
+  .city-weather-item__other-info {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .info {
+    margin-top: 10px;
+    align-items: center;
+  }
 }
 </style>

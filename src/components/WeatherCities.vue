@@ -27,11 +27,14 @@
         ></city-weather-item>
       </KeepAlive>
     </div>
+    <custom-dialog class="delete-city-dialog" v-model:show="dialogVisible">{{
+      dialogMessage
+    }}</custom-dialog>
   </section>
 </template>
 
 <script>
-import cityWeatherItem from "@/components/UI/CityWeatherItem.vue";
+import cityWeatherItem from "@/components/CityWeatherItem.vue";
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 
 export default {
@@ -42,12 +45,15 @@ export default {
   data() {
     return {
       itemData: null,
+      dialogVisible: false,
+      dialogMessage: null,
     };
   },
   computed: {
     ...mapState({
       citiesWeather: (state) => state.weather.citiesWeather,
       currentWeatherData: (state) => state.weather.currentWeatherData,
+      dialogMessageStore: (state) => state.weather.dialogMessage,
     }),
     ...mapGetters({
       formattedCitiesWeather: "weather/formattedCitiesWeather",
@@ -62,17 +68,28 @@ export default {
     ...mapActions({
       fetchWeatherByIP: "weather/fetchWeatherByIP",
     }),
+    dialogOpen(message) {
+      this.dialogMessage = message;
+      this.dialogVisible = true;
+    },
     addCity() {
       this.setCitiesWeather(this.currentWeatherData);
+      if (this.dialogMessageStore) {
+        this.dialogOpen(this.dialogMessageStore);
+      } else {
+        this.dialogOpen("City added to list");
+      }
     },
     deleteCity() {
       if (this.itemData) {
         this.deleteCitiesWeatherItem(this.itemData);
         this.resetItemData();
+        this.dialogOpen("City deleted from list");
       }
     },
     clearCities() {
       this.clearCitiesWeather();
+      this.dialogOpen("Cities list is cleared");
     },
     getLocalStorageItem() {
       return JSON.parse(localStorage.getItem("favoritesCitiesWeather"));
@@ -82,32 +99,39 @@ export default {
       localStorage.setItem("favoritesCitiesWeather", JSON.stringify(arr));
     },
     checkLocalStorage() {
-      return this.getLocalStorageItem().some((item) => {
-        return item.id === this.itemData.id;
-      });
+      return (
+        this.getLocalStorageItem().length === 5 ||
+        this.getLocalStorageItem().some((item) => {
+          return item.id === this.itemData?.id;
+        })
+      );
     },
     addToFavorites() {
-      let lsFavoritesCitiesWeather = [];
+      if (this.itemData) {
+        let lsFavoritesCitiesWeather = [];
 
-      if (this.getLocalStorageItem()) {
-        if (!this.checkLocalStorage()) {
-          lsFavoritesCitiesWeather = this.getLocalStorageItem();
-          this.setLocalStorageData(lsFavoritesCitiesWeather);
+        if (this.getLocalStorageItem()) {
+          if (!this.checkLocalStorage()) {
+            lsFavoritesCitiesWeather = this.getLocalStorageItem();
+            this.setLocalStorageData(lsFavoritesCitiesWeather);
+          } else {
+            this.dialogOpen(
+              "City exist in favorites list or favorites list is over"
+            );
+          }
         } else {
-          console.log("Element exist");
+          this.setLocalStorageData(lsFavoritesCitiesWeather);
         }
+        this.resetItemData();
       } else {
-        this.setLocalStorageData(lsFavoritesCitiesWeather);
+        this.dialogOpen("You must select city");
       }
-
-      this.resetItemData();
     },
     getItemData(itemData) {
-      console.log(itemData);
       this.itemData = itemData;
     },
     resetItemData() {
-      this.itemData = [];
+      this.itemData = null;
     },
   },
 };
@@ -118,8 +142,8 @@ export default {
   margin-top: 30px;
   padding: 15px;
   width: 80%;
+  border-radius: 6px;
   background: #ffffff;
-  box-shadow: 0px 0px 11px 7px rgb(0, 153, 255, 0.2);
 }
 
 .weather-cities__buttons {
@@ -146,6 +170,24 @@ export default {
 }
 
 .selected {
-  box-shadow: 0px 0px 11px 7px rgb(0, 153, 255, 0.85);
+  opacity: 0.9;
+  transform: scale(1.02);
+  transition: all 0.5s;
+}
+
+.delete-city-dialog,
+.local-storage-dialog {
+  text-align: center;
+}
+
+@media (max-width: 570px) {
+  .weather-cities__buttons {
+    flex-direction: column;
+  }
+
+  .weather-cities__button {
+    width: 100%;
+    margin: 10px 0 auto;
+  }
 }
 </style>

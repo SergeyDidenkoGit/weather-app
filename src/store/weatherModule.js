@@ -14,6 +14,8 @@ export const weatherModule = {
         day: "numeric",
       },
       citiesWeather: [],
+      favoritesCitiesWeather: [],
+      dialogMessage: null,
     };
   },
   getters: {
@@ -27,7 +29,7 @@ export const weatherModule = {
       );
     },
     currentTemperature(state) {
-      return Math.floor(state.currentWeatherData?.main?.temp);
+      return Math.round(state.currentWeatherData?.main?.temp);
     },
     currentFeels(state) {
       return Math.round(state.currentWeatherData?.main?.feels_like);
@@ -121,15 +123,19 @@ export const weatherModule = {
     setLoading(state, value) {
       state.isLoading = value;
     },
+    setDialogMessage(state, value) {
+      state.dialogMessage = value;
+    },
     setCitiesWeather(state, data) {
+      state.dialogMessage = null;
       if (state.citiesWeather.length === 0) {
         state.citiesWeather.push(data);
       } else if (state.citiesWeather.length < 5) {
         if (!state.citiesWeather.some((item) => item.dt === data.dt)) {
           state.citiesWeather.push(data);
+        } else {
+          state.dialogMessage = "City exist in list";
         }
-      } else {
-        console.log("Can't add");
       }
     },
     deleteCitiesWeatherItem(state, data) {
@@ -141,6 +147,9 @@ export const weatherModule = {
     },
     clearCitiesWeather(state) {
       state.citiesWeather = [];
+    },
+    setFavoritesCitiesWeather(state, date) {
+      state.favoritesCitiesWeather.push(date);
     },
   },
   actions: {
@@ -247,6 +256,29 @@ export const weatherModule = {
         console.log(e);
       } finally {
         commit("setLoading", false);
+      }
+    },
+    async fetchCurrentWeatherByCoords({ state, commit }, userData) {
+      try {
+        const response = await axios.get(
+          "https://api.openweathermap.org/data/2.5/weather",
+          {
+            params: {
+              lat: userData.lat,
+              lon: userData.lon,
+              units: state.units,
+              appid: state.appid,
+            },
+          }
+        );
+        // commit("setFavoritesCitiesWeather", response.data);
+        return response.data;
+      } catch (e) {
+        console.log(e);
+      } finally {
+        setTimeout(() => {
+          commit("setLoading", false);
+        }, 1000);
       }
     },
   },

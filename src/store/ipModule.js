@@ -16,12 +16,12 @@ export const ipModule = {
   actions: {
     async fetchIP({ state, commit }) {
       try {
-        // const response = await axios.get("https://ipapi.co/json/");
-        const response = await axios.get("https://api.ipgeolocation.io/ipgeo", {
-          params: {
-            apiKey: state.apiKey,
-          },
-        });
+        const response = await axios.get("https://ipapi.co/json/");
+        // const response = await axios.get("https://api.ipgeolocation.io/ipgeo", {
+        //   params: {
+        //     apiKey: state.apiKey,
+        //   },
+        // });
         commit("setIP", response.data);
       } catch (e) {
         console.log(e);

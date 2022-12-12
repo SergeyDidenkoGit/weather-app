@@ -1,45 +1,41 @@
 <template>
-  <div class="main">
+  <section class="main">
     <div class="search">
       <div class="search__wrapper">
         <autocomplete-input class="search-input"></autocomplete-input>
-        <div class="f-button"></div>
       </div>
     </div>
-    <div class="main__wrapper">
-      <div>
-        <h1 class="main__header">Weather in {{ city }}</h1>
-      </div>
-      <div class="weather">
-        <div class="weather__buttons">
-          <custom-button
-            class="weather__button day"
-            :class="{ weather__button_active: weatherRange[0].active }"
-            @click="changeWeatherRange(0)"
-            >Day</custom-button
-          >
-          <custom-button
-            class="weather__button weak"
-            :class="{ weather__button_active: weatherRange[1].active }"
-            @click="changeWeatherRange(1)"
-            >Weak</custom-button
-          >
+    <transition-group name="weather-card">
+      <template v-if="!isLoading">
+        <div class="main__wrapper">
+          <div>
+            <h1 class="main__header">Weather in {{ city }}</h1>
+          </div>
+          <div class="weather">
+            <div class="weather__buttons">
+              <custom-button
+                class="weather__button day"
+                :class="{ weather__button_active: !isWeakWeather }"
+                @click="changeWeatherRange"
+                >Day</custom-button
+              >
+              <custom-button
+                class="weather__button weak"
+                :class="{ weather__button_active: isWeakWeather }"
+                @click="changeWeatherRange"
+                >Weak</custom-button
+              >
+            </div>
+            <weather-card v-if="!isWeakWeather"></weather-card>
+            <weak-weather-card v-if="isWeakWeather"></weak-weather-card>
+          </div>
+          <weather-cities></weather-cities>
+          <weather-graph :range="isWeakWeather"></weather-graph>
         </div>
-        <transition-group name="weather-card">
-          <weather-card
-            v-if="weatherRange[0].active && !isLoading"
-            key="weatherCard"
-          ></weather-card>
-          <weak-weather-card
-            v-if="weatherRange[1].active && !isLoading"
-            key="weakWeatherCard"
-          ></weak-weather-card>
-        </transition-group>
-      </div>
-      <weather-cities></weather-cities>
-      <weather-graph></weather-graph>
-    </div>
-  </div>
+      </template>
+    </transition-group>
+    <custom-loader class="custom-loader" v-if="isLoading"></custom-loader>
+  </section>
 </template>
 
 <script>
@@ -60,7 +56,7 @@ export default {
   },
   data() {
     return {
-      weatherRange: [{ active: true }, { active: false }],
+      isWeakWeather: false,
     };
   },
   computed: {
@@ -80,10 +76,8 @@ export default {
       fetchCurrentWeatherByIP: "weather/fetchCurrentWeatherByIP",
       fetchWeatherByIP: "weather/fetchWeatherByIP",
     }),
-    changeWeatherRange(id) {
-      this.weatherRange.forEach((item, index) => {
-        item.active = index === id;
-      });
+    changeWeatherRange() {
+      this.isWeakWeather = !this.isWeakWeather;
     },
   },
   async created() {
@@ -95,8 +89,13 @@ export default {
 </script>
 
 <style scoped>
+.main {
+  max-width: 100%;
+}
+
 .search {
   padding: 20px 20px;
+  width: 100%;
   background-color: #0099ff;
 }
 
@@ -109,10 +108,6 @@ export default {
 .search-input {
   width: 30%;
   align-self: flex-start;
-}
-
-.main {
-  max-width: 100%;
 }
 
 .main__wrapper {
@@ -146,15 +141,36 @@ export default {
   background: #ffffff;
   color: #0e3c62;
   border: 1px solid #0e3c62;
+  pointer-events: none;
 }
 
 .weather-card-enter-active,
 .weather-card-leave-active {
-  transition: all 0.1s ease;
+  transition: all 1s ease;
 }
 
 .weather-card-enter-from,
 .weather-card-leave-to {
   opacity: 0;
+  transform: translateY(-30px);
+}
+
+.custom-loader {
+  margin: 50px auto;
+}
+
+@media (max-width: 570px) {
+  .search-input {
+    width: 100%;
+  }
+
+  .weather__buttons {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .weather__button {
+    width: 100%;
+  }
 }
 </style>
