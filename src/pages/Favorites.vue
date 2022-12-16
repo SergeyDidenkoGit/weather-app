@@ -24,7 +24,7 @@
 
 <script>
 import FavoritesCityWeatherCard from "@/components/FavoritesCityWeatherCard";
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   components: {
@@ -37,10 +37,16 @@ export default {
   },
   computed: {
     ...mapState({
+      ipData: (state) => state.ip.ipData,
       isLoading: (state) => state.weather.isLoading,
     }),
   },
   methods: {
+    ...mapActions({
+      fetchIP: "ip/fetchIP",
+      fetchCurrentWeatherByIP: "weather/fetchCurrentWeatherByIP",
+      fetchWeatherByIP: "weather/fetchWeatherByIP",
+    }),
     refreshData() {
       this.citiesCoords = JSON.parse(
         localStorage.getItem("favoritesCitiesWeather")
@@ -51,6 +57,11 @@ export default {
     this.citiesCoords = JSON.parse(
       localStorage.getItem("favoritesCitiesWeather")
     )?.map((item) => item?.coord);
+  },
+  async created() {
+    await this.fetchIP();
+    await this.fetchCurrentWeatherByIP(this.ipData);
+    await this.fetchWeatherByIP(this.ipData);
   },
 };
 </script>
